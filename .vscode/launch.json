@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    { "name": "Quick check (p01-p02)", "type": "debugpy", "request": "launch",
+      "program": "${workspaceFolder}/run_all.py", "args": ["--quick"], "cwd": "${workspaceFolder}", "console": "integratedTerminal" },
+    { "name": "Full experiments", "type": "debugpy", "request": "launch",
+      "program": "${workspaceFolder}/run_all.py", "cwd": "${workspaceFolder}", "console": "integratedTerminal" },
+    { "name": "Generate PDDL/RDDL files", "type": "debugpy", "request": "launch",
+      "program": "${workspaceFolder}/tools/gen.py", "cwd": "${workspaceFolder}", "console": "integratedTerminal" },
+    { "name": "Classical experiments (Fast Downward)", "type": "debugpy", "request": "launch",
+      "program": "${workspaceFolder}/tools/run_classical.py", "args": ["--timeout", "300"], "cwd": "${workspaceFolder}", "console": "integratedTerminal" },
+    { "name": "Numeric experiments (ENHSP)", "type": "debugpy", "request": "launch",
+      "program": "${workspaceFolder}/tools/run_numeric.py", "args": ["--timeout", "300"], "cwd": "${workspaceFolder}", "console": "integratedTerminal" },
+    { "name": "RDDL evaluation (pyRDDLGym)", "type": "debugpy", "request": "launch",
+      "program": "${workspaceFolder}/tools/run_rddl.py", "args": ["--episodes", "30", "--rollout-episodes", "12", "--problems", "p01", "p02", "p03", "p04"], "cwd": "${workspaceFolder}", "console": "integratedTerminal" }
+  ]
+}

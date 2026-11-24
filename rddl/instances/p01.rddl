@@ -1,0 +1,70 @@
+// p01: warm-up: 1 ghost, no pills  {'cells': 12, 'dots': 10, 'pills': 0, 'ghosts': 1, 'phases': 4}
+//   #######
+//   #P....#
+//   #.###.#
+//   #..G..#
+//   #######
+non-fluents nf_pacman_p01 {
+    domain = pacman_mdp;
+    objects {
+        cell : {c1_1, c2_1, c3_1, c4_1, c5_1, c1_2, c5_2, c1_3, c2_3, c3_3, c4_3, c5_3};
+        ghost : {g1};
+        step : {st0, st1, st2, st3};
+    };
+    non-fluents {
+        ADJ(c1_1, c1_2) = true;
+        ADJ(c1_1, c2_1) = true;
+        ADJ(c2_1, c1_1) = true;
+        ADJ(c2_1, c3_1) = true;
+        ADJ(c3_1, c2_1) = true;
+        ADJ(c3_1, c4_1) = true;
+        ADJ(c4_1, c3_1) = true;
+        ADJ(c4_1, c5_1) = true;
+        ADJ(c5_1, c5_2) = true;
+        ADJ(c5_1, c4_1) = true;
+        ADJ(c1_2, c1_1) = true;
+        ADJ(c1_2, c1_3) = true;
+        ADJ(c5_2, c5_1) = true;
+        ADJ(c5_2, c5_3) = true;
+        ADJ(c1_3, c1_2) = true;
+        ADJ(c1_3, c2_3) = true;
+        ADJ(c2_3, c1_3) = true;
+        ADJ(c2_3, c3_3) = true;
+        ADJ(c3_3, c2_3) = true;
+        ADJ(c3_3, c4_3) = true;
+        ADJ(c4_3, c3_3) = true;
+        ADJ(c4_3, c5_3) = true;
+        ADJ(c5_3, c5_2) = true;
+        ADJ(c5_3, c4_3) = true;
+        ROUTE(g1, st0, c3_3) = true;
+        ROUTE(g1, st1, c2_3) = true;
+        ROUTE(g1, st2, c1_3) = true;
+        ROUTE(g1, st3, c2_3) = true;
+        STEP-NEXT(g1, st0, st1) = true;
+        STEP-NEXT(g1, st1, st2) = true;
+        STEP-NEXT(g1, st2, st3) = true;
+        STEP-NEXT(g1, st3, st0) = true;
+    };
+}
+
+instance pacman_p01 {
+    domain = pacman_mdp;
+    non-fluents = nf_pacman_p01;
+    init-state {
+        pacman-at(c1_1) = true;
+        dot(c1_2) = true;
+        dot(c1_3) = true;
+        dot(c2_1) = true;
+        dot(c2_3) = true;
+        dot(c3_1) = true;
+        dot(c4_1) = true;
+        dot(c4_3) = true;
+        dot(c5_1) = true;
+        dot(c5_2) = true;
+        dot(c5_3) = true;
+        ghost-step(g1, st0) = true;
+    };
+    max-nondef-actions = 1;
+    horizon = 40;
+    discount = 1.0;
+}

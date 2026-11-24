@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Planner leftovers from manual runs
+sas_plan
+sas_plan.*
+output.sas
+output
+plan.*
+
+# Quick-run results (the full results/ folder is kept)
+results_quick/
+
+# macOS
+.DS_Store

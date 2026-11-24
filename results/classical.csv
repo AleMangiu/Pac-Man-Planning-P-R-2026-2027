@@ -1,0 +1,51 @@
+problem,encoding,config,optimal_config,status,plan_length,valid,expanded,generated,search_time_s,total_time_s,operators,axioms
+p01,adl,A* blind,True,solved,14,yes,432,1231,0.0,0.1,144,26
+p01,adl,A* hmax,True,solved,14,yes,169,486,0.0,0.1,144,26
+p01,adl,GBFS hFF,False,solved,31,yes,122,352,0.0,0.1,144,26
+p01,adl,LAMA-first,False,solved,30,yes,216,621,0.0,0.11,144,26
+p01,adl,A* LM-cut,True,unsupported (axioms/cond. effects),,,,,,0.11,144,26
+p01,strips,A* blind,True,solved,14,yes,435,1240,0.0,0.12,199,0
+p01,strips,A* hmax,True,solved,14,yes,169,486,0.0,0.11,199,0
+p01,strips,A* LM-cut,True,solved,14,yes,92,264,0.003999,0.13,199,0
+p01,strips,GBFS hFF,False,solved,28,yes,116,329,0.0,0.11,199,0
+p01,strips,LAMA-first,False,solved,14,yes,22,61,0.003999,0.11,199,0
+p02,adl,A* blind,True,solved,17,yes,6551,20599,0.011995,0.12,318,39
+p02,adl,A* hmax,True,solved,17,yes,920,2929,0.007995,0.12,318,39
+p02,adl,GBFS hFF,False,solved,17,yes,55,172,0.004002,0.11,318,39
+p02,adl,LAMA-first,False,solved,18,yes,35,112,0.0,0.11,318,39
+p02,adl,A* LM-cut,True,unsupported (axioms/cond. effects),,,,,,0.1,318,39
+p02,strips,A* blind,True,solved,17,yes,6858,21565,0.008011,0.14,544,0
+p02,strips,A* hmax,True,solved,17,yes,920,2929,0.007966,0.14,544,0
+p02,strips,A* LM-cut,True,solved,17,yes,42,130,0.008015,0.14,544,0
+p02,strips,GBFS hFF,False,solved,17,yes,52,166,0.0,0.13,544,0
+p02,strips,LAMA-first,False,solved,18,yes,32,103,0.0,0.14,544,0
+p03,adl,A* blind,True,solved,38,yes,8078134,26076752,25.90311,26.2,630,77
+p03,adl,A* hmax,True,solved,38,yes,1504112,5031886,18.014697,18.23,630,77
+p03,adl,GBFS hFF,False,solved,45,yes,207,721,0.007984,0.13,630,77
+p03,adl,LAMA-first,False,solved,77,yes,195,648,0.003898,0.13,630,77
+p03,adl,A* LM-cut,True,unsupported (axioms/cond. effects),,,,,,0.12,630,77
+p03,strips,A* blind,True,solved,38,yes,8475886,27341191,13.502233,13.73,1104,0
+p03,strips,A* hmax,True,solved,38,yes,1504112,5031886,19.956636,20.41,1104,0
+p03,strips,A* LM-cut,True,solved,38,yes,13027,43352,5.911387,6.14,1104,0
+p03,strips,GBFS hFF,False,solved,48,yes,283,992,0.00758,0.2,1104,0
+p03,strips,LAMA-first,False,solved,54,yes,192,621,0.003938,0.22,1104,0
+p04,adl,A* blind,True,solved,45,yes,6141732,19194621,32.963859,34.24,3120,237
+p04,adl,A* hmax,True,solved,45,yes,438388,1369876,14.434609,15.43,3120,237
+p04,adl,GBFS hFF,False,solved,69,yes,3274,9837,0.150355,0.53,3120,237
+p04,adl,LAMA-first,False,solved,55,yes,115,359,0.004999,0.3,3120,237
+p04,adl,A* LM-cut,True,unsupported (axioms/cond. effects),,,,,,0.26,3120,237
+p04,strips,A* blind,True,solved,45,yes,6244715,19507037,10.1871,10.83,5423,0
+p04,strips,A* hmax,True,solved,45,yes,438388,1369876,19.689585,20.97,5423,0
+p04,strips,A* LM-cut,True,solved,45,yes,3425,10670,9.418567,10.16,5423,0
+p04,strips,GBFS hFF,False,solved,81,yes,3067,9225,0.178443,0.62,5423,0
+p04,strips,LAMA-first,False,solved,47,yes,117,373,0.00639,0.49,5423,0
+p05,adl,A* blind,True,timeout,,,,,,134.77,3360,263
+p05,adl,A* hmax,True,timeout,,,,,,119.87,3360,263
+p05,adl,GBFS hFF,False,solved,118,yes,2805,9213,0.25666,0.56,3360,263
+p05,adl,LAMA-first,False,solved,85,yes,176,587,0.010878,0.35,3360,263
+p05,adl,A* LM-cut,True,unsupported (axioms/cond. effects),,,,,,0.28,3360,263
+p05,strips,A* blind,True,timeout,,,,,,120.24,5853,0
+p05,strips,A* hmax,True,timeout,,,,,,120.15,5853,0
+p05,strips,A* LM-cut,True,timeout,,,,,,120.39,5853,0
+p05,strips,GBFS hFF,False,solved,160,yes,7499,24333,0.683904,1.25,5853,0
+p05,strips,LAMA-first,False,solved,79,yes,181,590,0.011696,0.57,5853,0

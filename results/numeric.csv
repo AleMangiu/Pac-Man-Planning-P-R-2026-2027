@@ -1,0 +1,27 @@
+problem,config,optimal_config,hit_penalty,status,plan_length,hits,metric,valid,expanded,total_time_s
+p01,GBFS hadd,False,10,solved,12,1,22.0,yes,18,0.66
+p01,sat-hmrp,False,10,solved,12,1,22.0,yes,19,0.85
+p01,A* blind,True,10,solved,14,0,14.0,yes,466,0.56
+p01,A* hrmax,True,10,solved,14,0,14.0,yes,112,0.9
+p02,GBFS hadd,False,10,solved,21,1,31.0,yes,710,1.58
+p02,sat-hmrp,False,10,solved,27,2,47.0,yes,350,1.33
+p02,A* blind,True,10,solved,17,0,17.0,yes,12940,0.88
+p02,A* hrmax,True,10,solved,17,0,17.0,yes,138,1.23
+p03,GBFS hadd,False,10,solved,38,2,58.0,yes,44,1.71
+p03,sat-hmrp,False,10,solved,89,2,109.0,yes,29016,14.24
+p03,A* blind,True,10,timeout,,,,,,120.11
+p03,A* hrmax,True,10,timeout,,,,,,120.03
+p04,GBFS hadd,False,10,solved,78,2,98.0,yes,151,7.42
+p04,sat-hmrp,False,10,solved,74,2,94.0,yes,1581,8.94
+p04,A* blind,True,10,timeout,,,,,,120.11
+p04,A* hrmax,True,10,solved,45,0,45.0,yes,15159,104.47
+p05,GBFS hadd,False,10,solved,153,2,173.0,yes,22332,46.62
+p05,sat-hmrp,False,10,timeout,,,,,,120.05
+p05,A* blind,True,10,timeout,,,,,,120.13
+p05,A* hrmax,True,10,timeout,,,,,,120.07
+p01,A* hrmax,True,1,solved,12,1,13.0,yes,64,0.79
+p01,A* hrmax,True,3,solved,14,0,14.0,yes,113,0.81
+p02,A* hrmax,True,1,solved,17,0,17.0,yes,153,1.35
+p02,A* hrmax,True,3,solved,17,0,17.0,yes,138,1.35
+p03,A* hrmax,True,1,solved,33,2,35.0,yes,39121,60.54
+p03,A* hrmax,True,3,timeout,,,,,,120.03

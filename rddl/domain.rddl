@@ -1,0 +1,108 @@
+////////////////////////////////////////////////////////////////////////////
+// Simplified Pac-Man - probabilistic variant (RDDL, pyRDDLGym)
+//
+// Same maze, dots, pills and ghost patrols as the PDDL models, but the ghosts
+// are no longer clockwork: at every step each ghost independently advances
+// along its patrol with probability P-ADVANCE, otherwise it stays where it is.
+// Their position is therefore uncertain after a few steps and an open-loop
+// plan computed on the deterministic model can walk into a ghost.
+//
+// Other changes w.r.t. PDDL, imposed by the MDP view:
+//  * the goal becomes a reward: +DOT-REWARD per dot, +GHOST-REWARD per eaten
+//    ghost, +WIN-BONUS when the last dot is eaten, -STEP-COST per step,
+//    -DEATH-PENALTY when Pac-Man is caught (the episode is then frozen);
+//  * the power pill is a timer (as in the numeric variant): integer state
+//    fluent "power";
+//  * an action is "move(?c)": go to cell ?c if it is adjacent, otherwise stay
+//    (choosing no action also means waiting);
+//  * the phase objects of PDDL are replaced by one patrol pointer per ghost
+//    (ghost-step), because ghosts no longer move in lock-step.
+////////////////////////////////////////////////////////////////////////////
+
+domain pacman_mdp {
+
+    types {
+        cell  : object;
+        ghost : object;
+        step  : object;     // position index along a patrol
+    };
+
+    pvariables {
+        // ---------------- non-fluents (maze and patrols) ----------------
+        ADJ(cell, cell)               : { non-fluent, bool, default = false };
+        ROUTE(ghost, step, cell)      : { non-fluent, bool, default = false };  // patrol index -> cell
+        STEP-NEXT(ghost, step, step)  : { non-fluent, bool, default = false };  // cyclic successor index
+        P-ADVANCE                     : { non-fluent, real, default = 0.8 };
+        PILL-DURATION                 : { non-fluent, int,  default = 8 };
+        STEP-COST                     : { non-fluent, real, default = 1.0 };
+        DOT-REWARD                    : { non-fluent, real, default = 10.0 };
+        GHOST-REWARD                  : { non-fluent, real, default = 50.0 };
+        WIN-BONUS                     : { non-fluent, real, default = 200.0 };
+        DEATH-PENALTY                 : { non-fluent, real, default = 500.0 };
+
+        // ---------------- state ----------------
+        pacman-at(cell)               : { state-fluent, bool, default = false };
+        dot(cell)                     : { state-fluent, bool, default = false };
+        pill(cell)                    : { state-fluent, bool, default = false };
+        ghost-step(ghost, step)       : { state-fluent, bool, default = false };
+        ghost-alive(ghost)            : { state-fluent, bool, default = true };
+        power                         : { state-fluent, int,  default = 0 };
+        caught                        : { state-fluent, bool, default = false };
+
+        // ---------------- intermediate ----------------
+        advance(ghost)                : { interm-fluent, bool };   // one coin flip per ghost
+
+        // ---------------- action ----------------
+        move(cell)                    : { action-fluent, bool, default = false };
+    };
+
+    cpfs {
+        advance(?g) = Bernoulli(P-ADVANCE);
+
+        ghost-step'(?g, ?s) =
+            if (advance(?g))
+                then exists_{?s2 : step} [ghost-step(?g, ?s2) ^ STEP-NEXT(?g, ?s2, ?s)]
+            else ghost-step(?g, ?s);
+
+        // the move is executed only if the target is adjacent and the game is not over
+        pacman-at'(?c) =
+            if (~caught ^ exists_{?t : cell, ?f : cell} [move(?t) ^ pacman-at(?f) ^ ADJ(?f, ?t)])
+                then move(?c)
+            else pacman-at(?c);
+
+        dot'(?c)  = dot(?c)  ^ ~pacman-at'(?c);
+        pill'(?c) = pill(?c) ^ ~pacman-at'(?c);
+
+        power' =
+            if (exists_{?c : cell} [pill(?c) ^ pacman-at'(?c)]) then PILL-DURATION
+            else max[power - 1, 0];
+
+        // a ghost meets Pac-Man if they end in the same cell or swap cells
+        ghost-alive'(?g) =
+            ghost-alive(?g) ^ ~( power > 0 ^ (
+                (exists_{?c : cell, ?s : step} [pacman-at'(?c) ^ ghost-step'(?g, ?s) ^ ROUTE(?g, ?s, ?c)])
+              | (exists_{?c : cell, ?d : cell, ?s : step, ?s2 : step}
+                    [pacman-at(?c) ^ pacman-at'(?d) ^ ghost-step(?g, ?s) ^ ROUTE(?g, ?s, ?d)
+                     ^ ghost-step'(?g, ?s2) ^ ROUTE(?g, ?s2, ?c) ^ (?c ~= ?d)]) ));
+
+        caught' = caught | exists_{?g : ghost} [ ghost-alive(?g) ^ power <= 0 ^ (
+                (exists_{?c : cell, ?s : step} [pacman-at'(?c) ^ ghost-step'(?g, ?s) ^ ROUTE(?g, ?s, ?c)])
+              | (exists_{?c : cell, ?d : cell, ?s : step, ?s2 : step}
+                    [pacman-at(?c) ^ pacman-at'(?d) ^ ghost-step(?g, ?s) ^ ROUTE(?g, ?s, ?d)
+                     ^ ghost-step'(?g, ?s2) ^ ROUTE(?g, ?s2, ?c) ^ (?c ~= ?d)]) )];
+    };
+
+    // no reward once the game is over (caught or all dots eaten)
+    reward =
+        if (caught | ~exists_{?c : cell} [dot(?c)]) then 0.0
+        else ( - STEP-COST
+               + DOT-REWARD   * (sum_{?c : cell} [dot(?c) ^ ~dot'(?c)])
+               + GHOST-REWARD * (sum_{?g : ghost} [ghost-alive(?g) ^ ~ghost-alive'(?g)])
+               + WIN-BONUS    * (~exists_{?c : cell} [dot'(?c)])
+               - DEATH-PENALTY * caught' );
+
+    action-preconditions {
+        // at most one move per step (also enforced by max-nondef-actions = 1)
+        (sum_{?c : cell} [move(?c)]) <= 1;
+    };
+}
